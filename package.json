@@ -1,0 +1,19 @@
+{
+  "name": "javier-spreadsheets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohataken/javier-spreadsheets.git"
+  },
+  "author": "ohataken",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohataken/javier-spreadsheets/issues"
+  },
+  "homepage": "https://github.com/ohataken/javier-spreadsheets#readme"
+}
