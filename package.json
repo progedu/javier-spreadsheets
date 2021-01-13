@@ -6,6 +6,9 @@
   "scripts": {
     "test": "jest"
   },
+  "bin": {
+    "javier-spreadsheets": "javier-spreadsheets.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ohataken/javier-spreadsheets.git"
