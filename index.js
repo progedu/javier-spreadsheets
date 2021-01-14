@@ -90,6 +90,11 @@ module.exports = class {
     return callback.apply(this, process.argv);
   }
 
+  getSpreadsheetIdFromUrl(urlstring) {
+    const m = /https:\/\/docs.google.com\/spreadsheets\/d\/(.*?)\//.exec(urlstring);
+    return m && m[1]
+  }
+
   static open(callback) {
     return callback(new this());
   }
