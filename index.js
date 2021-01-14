@@ -99,4 +99,16 @@ module.exports = class {
     return callback(new this());
   }
   
+  async execUpdateCommand(spreadsheetsUrl, startRange, values) {
+    const creds = await this.readJSONFile(this.getCredentialsPathFromEnv());
+    const token = await this.readJSONFile(this.getTokenPathFromEnv());
+
+    const client = this.createGoogleOAuth2ClientAndAuthorize(creds, token);
+    const spreadsheets = this.createSpreadsheetsClient(client);
+
+    const range = Range.fromA1Notation(startRange);
+
+    await this.spreadsheetsUpdate(spreadsheets, this.getSpreadsheetIdFromUrl(spreadsheetsUrl), range.createRectangleRange(values[0].length, values.length), values);
+  }
+  
 };
