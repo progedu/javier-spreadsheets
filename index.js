@@ -86,6 +86,10 @@ module.exports = class {
     });
   }
 
+  static argv(callback) {
+    return callback.apply(this, process.argv);
+  }
+
   static open(callback) {
     return callback(new this());
   }
