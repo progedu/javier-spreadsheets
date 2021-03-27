@@ -128,4 +128,11 @@ module.exports = class {
     await this.spreadsheetsUpdate(spreadsheets, this.getSpreadsheetIdFromUrl(spreadsheetsUrl), range.createRectangleRange(values[0].length, values.length), values);
   }
 
+  async execUpdateCommandViaStdin(spreadsheetsUrl, startRange) {
+    return this.parseStdinCSV((values) => {
+      console.log(values);
+      this.execUpdateCommand(spreadsheetsUrl, startRange, values);
+    });
+  }
+
 };
