@@ -180,6 +180,14 @@ module.exports = class {
   }
   
   async execUpdateCommand(spreadsheetsUrl, startRange, values) {
+    if (!this.getCredentialsPathFromEnv()) {
+      throw 'a environment variable JAVIER_SPREADSHEETS_CREDS_PATH is not defined';
+    }
+
+    if (!this.getTokenPathFromEnv()) {
+      throw 'a environment variable JAVIER_SPREADSHEETS_TOKEN_PATH is not defined';
+    }
+
     const creds = await this.readJSONFile(this.getCredentialsPathFromEnv());
     const token = await this.readJSONFile(this.getTokenPathFromEnv());
 
