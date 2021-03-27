@@ -1,5 +1,6 @@
 const fs = require('fs');
 const os = require('os');
+const readline = require('readline');
 const { google } = require('googleapis');
 const Range = require('./spreadsheets_range');
 
@@ -43,6 +44,13 @@ module.exports = class {
 
   getTokenPathFromEnv() {
     return process.env.JAVIER_SPREADSHEETS_TOKEN_PATH || this.getDefaultTokenPath();
+  }
+
+  createReadlineInterface() {
+    return readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
   }
 
   createGoogleOAuth2Client(creds) {
