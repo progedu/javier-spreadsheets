@@ -86,6 +86,23 @@ module.exports = class {
     });
   }
 
+  parseStdinCSV(callback) {
+    const values = [];
+
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+
+    process.stdin.on('data', function(data) {
+      data.split("\n").forEach((line) => {
+        values.push(line.split(','));
+      });
+    });
+
+    process.stdin.on('end', function() {
+      return callback(values);
+    });
+  }
+
   static argv(callback) {
     return callback.apply(this, process.argv);
   }
