@@ -13,6 +13,14 @@ module.exports = class {
     });
   }
 
+  writeJSONFile(path, object, options) {
+    return new Promise((resolve) => {
+      return fs.writeFile(path, JSON.stringify(object), options, (err) => {
+        return resolve();
+      });
+    });
+  }
+
   readJSONFile(path, options) {
     return new Promise((resolve) => {
       return fs.readFile(path, options, (err, data) => {
