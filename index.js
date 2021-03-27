@@ -53,6 +53,53 @@ module.exports = class {
     });
   }
 
+  /**
+   * https://developers.google.com/sheets/api/quickstart/nodejs の手続きを解釈し直したもの。
+   * @method
+   */
+   async generateTokenJSON() {
+    const creds = await this.readJSONFile(this.getCredentialsPathFromEnv());
+    const client = this.createGoogleOAuth2Client(creds);
+
+    console.log('Authorize this app by visiting this url:', client.generateAuthUrl({
+      access_type: 'offline',
+      scope: [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/spreadsheets',
+      ],
+    }));
+
+    const code = await new Promise((resolve) => {
+      const rl = this.createReadlineInterface();
+      return rl.question('Enter the code from that page here: ', (code) => {
+        rl.close();
+        return resolve(code);
+      });
+    });
+
+    const token = await new Promise((resolve, reject) => {
+      return client.getToken(code, (err, token) => {
+        return err ? reject(err) : resolve(token);
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      return this.writeJSONFile(this.getTokenPathFromEnv(), token, (err) => {
+        return err ? reject(err) : resolve();
+      });
+    });
+  }
+
+  createAuthorizedGoogleOAuth2Client(callback) {
+    return this.createGoogleOAuth2Client((err, client) => {
+      return this.readSpreadsheetsTokenJSON((_, json) => {
+        client.setCredentials(json);
+        return callback(err, client);
+      });
+    });
+  }
+
   createGoogleOAuth2Client(creds) {
     const { client_id, client_secret, redirect_uris } = creds.installed;
     return new google.auth.OAuth2(
