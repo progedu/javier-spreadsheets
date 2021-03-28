@@ -4,29 +4,65 @@
 
 # Prerequesties
 
-## 1 credentials を手に入れて、配置する
+### 1 git clone, npm install, npm link する
 
-### 1 - 1 ~/.javier_spreadsheets_credentials.json に配置する 
+```
+git clone git@github.com:ohataken/javier-spreadsheets.git
+cd javier-spreadsheets 
+npm install 
+npm link 
+```
 
-### 1 - 2 環境変数 JAVIER_SPREADSHEETS_CREDS_PATH を指定する 
+### 2 credentials を手に入れて ~/.javier_spreadsheets_credentials.json に配置する 
 
-## 2 javier-spreadsheets setup を実行する 
+Google Workspace の管理者にもらうもの、中身はこんな感じ。
+
+```
+{
+  "installed": {
+    "client_id": "000000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+    "project_id": "xxxxxxxx",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "XXXXXXXXXXXXXXXXXXXXXXXX",
+    "redirect_uris": [
+      "urn:ietf:wg:oauth:2.0:oob",
+      "http://localhost"
+    ]
+  }
+}
+```
+
+または、環境変数 JAVIER_SPREADSHEETS_CREDS_PATH でファイルパスを指定してもよい。
+
+### 3 javier-spreadsheets setup を実行して、画面に表示された URL を開き、コードをコピーして、ターミナルにペーストする。
 
 ```
 javier-spreadsheets setup 
 ```
 
-## 3 テスト実行する 
+すると、以下のように表示されるので URL をブラウザで開いて、画面に表示されたコードをターミナルに貼り付ける。
 
-適当な Google Spreadsheets ファイルの URL と Range (シート名と範囲の組) を用意すること。 
+```
+Authorize this app by visiting this url: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.file%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&response_type=code&client_id=000000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob
+```
+
+# 使い方
+
+### csv ファイルを標準出力して、パイプで受け取り Google Spreadsheet へ反映する場合
+
+```
+cat [csv file] | javier-spreadsheets update [sheet url] [sheetname!range] 
+```
+
+実行例
 
 ```
 echo "1, 2" | javier-spreadsheets update https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/edit#gid=0 'Sheet 1!A1'
 ```
 
-# Tips 
-
-## jq と組み合わせて、 JSON を CSV に変換して Google Spreadsheets へ反映する。
+### jq と組み合わせて、 JSON を CSV に変換して Google Spreadsheets へ反映する。
 
 例えば、 Slack API の conversations.list の返り値の内容を使う場合。以下のような json ファイルをもとに作業を進めるとして、 
 
@@ -105,3 +141,5 @@ echo "1, 2" | javier-spreadsheets update https://docs.google.com/spreadsheets/d/
 ```
 cat conversations.list.json | jq -r '.channels[] | [.name, .num_members] | @csv' | javier-spreadsheets update https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/edit 'Sheet 1!A1'
 ```
+
+jq の使い方が上達すればいろいろできると思う(jqわからない)。
