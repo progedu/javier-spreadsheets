@@ -42,11 +42,25 @@ Google Workspace の管理者にもらうもの、中身はこんな感じ。
 javier-spreadsheets setup 
 ```
 
-すると、以下のように表示されるので URL をブラウザで開いて、画面に表示されたコードをターミナルに貼り付ける。
+すると、以下のように表示されるので URL をブラウザで開く。
 
 ```
 Authorize this app by visiting this url: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.file%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&response_type=code&client_id=000000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob
 ```
+
+いつもの OAuth2 の認証画面になる。許可を進めていくと、 localhost にリダイレクトされるため、ページが表示されなくなる。このときのアドレスは以下のようになっているはず。
+
+```
+http://localhost/?code=XXXXXXXXXXXXXXXX&scope=https://www.googleapis.com/auth/drive%20https://www.googleapis.com/auth/drive.file%20https://www.googleapis.com/auth/spreadsheets
+```
+
+この `XXXXXXXXXXXXXXXX` の部分だけを切り取って、ターミナルの
+
+```
+Enter the code from that page here: 
+```
+
+の部分に貼り付けて、 Enter を押す。
 
 # 使い方
 
